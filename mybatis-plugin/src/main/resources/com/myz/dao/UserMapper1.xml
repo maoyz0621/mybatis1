@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--　
+    namespace:命名空间,是随便取的
+
+-->
+<mapper namespace="com.myz.dao.Mapper">
+
+    <!-- id:唯一标示，可以任意取
+         resultType：返回值类型
+    -->
+    <select id="selectAll1" resultType="myuser">
+        select * from t_user
+    </select>
+
+
+    <select id="selectById1" resultType="com.myz.entity.User">
+        SELECT id, last_name, gender, email from t_user
+        <where>
+            id = #{id}
+        </where>
+    </select>
+</mapper>

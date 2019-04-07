@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       default-init-method="init" default-destroy-method="destory"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 读取外部配置文件 ignore-unresolvable="true",否则Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'jdbc.driver' in value "${jdbc.driver}"-->
+    <context:property-placeholder ignore-unresolvable="true" ignore-resource-not-found="true"
+                                  location="classpath:db.properties"/>
+
+    <!--c3p0连接池,设置公共参数 -->
+    <bean id="abstractDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--　读数据源　-->
+    <bean id="slaveDataSourceA" parent="abstractDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="url" value="${jdbc.url.read.a}"/>
+    </bean>
+
+    <!--　读数据源　-->
+    <bean id="slaveDataSourceB" parent="abstractDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="url" value="${jdbc.url.read.b}"/>
+    </bean>
+
+    <!--　写数据源　-->
+    <bean id="masterDataSource" parent="abstractDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="url" value="${jdbc.url.write}"/>
+    </bean>
+
+    <!-- sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="slaveDataSourceA"/>
+        <!--　mybatis配置文件　-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--　扫描mapper配置文件　-->
+        <property name="mapperLocations" value="classpath:com/myz/dao/UserVOMapper.xml"/>
+    </bean>
+
+
+    <!-- 配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 注入sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描Dao接口包 -->
+        <property name="basePackage" value="com.myz.dao"/>
+    </bean>
+
+    <!--　执行批量插入 -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <constructor-arg name="executorType" value="BATCH"/>
+    </bean>
+
+</beans>

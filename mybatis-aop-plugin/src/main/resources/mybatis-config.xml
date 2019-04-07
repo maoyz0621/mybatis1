@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--&lt;!&ndash;　外部配置文件,其优先级：-->
+    <!--1 在properties元素体内指定的属性首先被读取;-->
+    <!--2 然后根据properties元素中的resource属性读取类路径下属性文件或-->
+      <!--根据 url 属性指定的路径读取属性文件，并覆盖已读取的同名属性。-->
+    <!--3 最后读取作为方法参数传递的属性，并覆盖已读取的同名属性-->
+        <!--通过方法参数传递的属性具有最高优先级，-->
+            <!--resource/url 属性中指定的配置文件次之，-->
+                <!--最低优先级的是 properties 属性中指定的属性。-->
+    <!--&ndash;&gt;-->
+    <!--<properties resource="db.properties">-->
+        <!--<property name="username" value="root"/>-->
+        <!--<property name="password" value="root"/>-->
+        <!--&lt;!&ndash; 开启默认值　&ndash;&gt;-->
+        <!--<property name="org.apache.ibatis.parsing.PropertyParser.enable-default-value" value="true"/>-->
+    <!--</properties>-->
+    <!--<settings>-->
+        <!--&lt;!&ndash;　开启驼峰设置　&ndash;&gt;-->
+        <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+        <!--<setting name="logImpl" value="LOG4J"/>-->
+
+        <!--&lt;!&ndash; 开启懒加载　&ndash;&gt;-->
+        <!--&lt;!&ndash; 延迟加载的全局开关 &ndash;&gt;-->
+        <!--<setting name="lazyLoadingEnabled" value="true"/>-->
+        <!--&lt;!&ndash; 当开启时，任何方法的调用都会加载该对象的所有属性 &ndash;&gt;-->
+        <!--<setting name="aggressiveLazyLoading" value="false"/>-->
+    <!--</settings>-->
+
+    <typeAliases>
+        <!--　某个类起别名　-->
+        <typeAlias type="com.myz.entity.User" alias="myuser"/>
+        <!--　某个包下所有类　-->
+        <package name="com.myz.entity"/>
+        <!-- 使用@Alias()注解起别名　-->
+    </typeAliases>
+
+    <!--&lt;!&ndash;　类型处理器　&ndash;&gt;-->
+<!--&lt;!&ndash;    <typeHandlers>-->
+
+    <!--</typeHandlers>&ndash;&gt;-->
+
+    <!--　注册自定义插件　-->
+    <plugins>
+        <plugin interceptor="com.myz.plugin.MyPlugin1" >
+            <!--　property属性会传入插件setProperties中 -->
+            <property name="username1" value="myz1"/>
+            <property name="password1" value="hahaha1"/>
+        </plugin>
+        <plugin interceptor="com.myz.plugin.MyPlugin2" >
+            <!--　property属性会传入插件setProperties中 -->
+            <property name="username2" value="myz2"/>
+            <property name="password2" value="hahaha2"/>
+        </plugin>
+        <plugin interceptor="com.myz.plugin.MyPlugin3" >
+            <!--　property属性会传入插件setProperties中 -->
+            <property name="username2" value="myz2"/>
+            <property name="password2" value="hahaha2"/>
+        </plugin>
+        <!--&lt;!&ndash; 分页插件　&ndash;&gt;-->
+        <!--<plugin interceptor="com.github.pagehelper.PageInterceptor">-->
+            <!--<property name="param1" value="value1"/>-->
+        <!--</plugin>-->
+
+        <plugin interceptor="com.myz.plugin.DynamicPlugin"/>
+    </plugins>
+
+    <!--&lt;!&ndash; 保证默认环境要匹配其中一个环境ID &ndash;&gt;-->
+    <!--<environments default="development">-->
+
+        <!--<environment id="test">-->
+            <!--&lt;!&ndash; MANAGED(类型别名) 几乎没做什么。它从来不提交或回滚一个连接，而是让容器来管理事务的整个生命周期-->
+                 <!--默认情况下它会关闭连接，然而一些容器并不希望这样，因此需要将 closeConnection 属性设置为 false 来阻止它默认的关闭行为-->
+            <!--&ndash;&gt;-->
+            <!--<transactionManager type="MANAGED">-->
+                <!--<property name="closeConnection" value="false"/>-->
+            <!--</transactionManager>-->
+            <!--<dataSource type="UNPOOLED">-->
+                <!--<property name="driver" value="${jdbc.driver}"/>-->
+                <!--<property name="url" value="${jdbc.url}"/>-->
+                <!--&lt;!&ndash;　可以指定默认值　&ndash;&gt;-->
+                <!--<property name="username" value="${username:root}"/>-->
+                <!--<property name="password" value="${password}"/>-->
+            <!--</dataSource>-->
+        <!--</environment>-->
+
+        <!--<environment id="development">-->
+            <!--&lt;!&ndash;　事务管理器　&ndash;&gt;-->
+            <!--&lt;!&ndash; JDBC(类型别名) – 直接使用了 JDBC 的提交和回滚设置，它依赖于从数据源得到的连接来管理事务作用域 &ndash;&gt;-->
+            <!--<transactionManager type="JDBC"/>-->
+            <!--&lt;!&ndash;　数据源配置[UNPOOLED|POOLED|JNDI]-->
+                  <!--UNPOOLED– 这个数据源的实现只是每次被请求时打开和关闭连接-->
+                  <!--POOLED– 这种数据源的实现利用“池”的概念将 JDBC 连接对象组织起来，避免了创建新的连接实例时所必需的初始化和认证时间。-->
+                          <!--这是一种使得并发 Web 应用快速响应请求的流行处理方式。-->
+            <!--　&ndash;&gt;-->
+            <!--<dataSource type="POOLED">-->
+                <!--<property name="driver" value="${jdbc.driver}"/>-->
+                <!--<property name="url" value="${jdbc.url}"/>-->
+                <!--&lt;!&ndash;　可以指定默认值　&ndash;&gt;-->
+                <!--<property name="username" value="${username:root}"/>-->
+                <!--<property name="password" value="${password}"/>-->
+            <!--</dataSource>-->
+        <!--</environment>-->
+    <!--</environments>-->
+
+    <!--&lt;!&ndash;　不同数据库,在xml文件中配置databaseId　&ndash;&gt;-->
+    <!--<databaseIdProvider type="DB_VENDOR">-->
+        <!--<property name="Mysql" value="mysql"/>-->
+        <!--<property name="Oracle" value="oracle"/>-->
+    <!--</databaseIdProvider>-->
+
+
+    <!--&lt;!&ndash;　配置映射文件　&ndash;&gt;-->
+    <!--<mappers>-->
+        <!--<mapper resource="com/myz/dao/UserMapper1.xml"/>-->
+        <!--<mapper resource="com/myz/dao/UserMapper.xml"/>-->
+
+        <!--<mapper class="com.myz.dao.UserDao"/>-->
+        <!--<mapper class="com.myz.dao.RoleDao"/>-->
+        <!--<mapper class="com.myz.dao.RoleMapper"/>-->
+
+        <!--&lt;!&ndash; <package name=""/> &ndash;&gt;-->
+    <!--</mappers>-->
+
+</configuration>
