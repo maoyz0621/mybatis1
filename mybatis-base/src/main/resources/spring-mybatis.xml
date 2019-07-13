@@ -11,11 +11,17 @@
     <context:property-placeholder ignore-unresolvable="true" ignore-resource-not-found="true"
                                   location="classpath:db.properties"/>
 
-    <!--c3p0连接池,设置公共参数 -->
+    <!--alibaba连接池,设置公共参数 -->
     <bean id="abstractDataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="${jdbc.driver}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--　写数据源　-->
+    <bean id="masterDataSource" parent="abstractDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="url" value="${jdbc.url.write}"/>
     </bean>
 
     <!--　读数据源　-->
@@ -30,19 +36,13 @@
         <property name="url" value="${jdbc.url.read.b}"/>
     </bean>
 
-    <!--　写数据源　-->
-    <bean id="masterDataSource" parent="abstractDataSource">
-        <!-- 配置连接池属性 -->
-        <property name="url" value="${jdbc.url.write}"/>
-    </bean>
-
     <!-- sqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="slaveDataSourceA"/>
         <!--　mybatis配置文件　-->
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
         <!--　扫描mapper配置文件　-->
-        <property name="mapperLocations" value="classpath:com/myz/dao/UserVOMapper.xml"/>
+        <property name="mapperLocations" value="classpath:com/myz/dao/*.xml"/>
     </bean>
 
 

@@ -13,21 +13,10 @@ public enum DynamicDataSourceGlobal {
     /**
      * 写数据库
      */
-    WRITE("write"),
+    WRITE,
     /**
      * 读数据库
      */
-    READ("read");
-
-    private final String arg;
-
-    DynamicDataSourceGlobal(String arg) {
-        this.arg = arg;
-    }
-
-    public String getArg() {
-        return arg;
-    }
-
+    READ
 }
 

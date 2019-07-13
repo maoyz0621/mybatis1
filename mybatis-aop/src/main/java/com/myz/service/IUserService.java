@@ -26,6 +26,6 @@ public interface IUserService {
     /**
      * 执行写数据库
      */
-    @TargetDataSource(DynamicDataSourceGlobal.WRITE)
+    // @TargetDataSource(DynamicDataSourceGlobal.WRITE)
     void insertUser(UserVO userVO);
 }

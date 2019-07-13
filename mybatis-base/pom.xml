@@ -11,5 +11,5 @@
     <artifactId>mybatis-base</artifactId>
     <packaging>jar</packaging>
     <name>mybatis-base</name>
-    <url>http://www.example.com</url>
+    
 </project>

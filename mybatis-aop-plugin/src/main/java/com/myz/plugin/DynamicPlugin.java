@@ -34,6 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
         @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
         @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
 public class DynamicPlugin implements Interceptor {
+
     protected static final Logger logger = LoggerFactory.getLogger(DynamicPlugin.class);
     /**
      * 空格\u0020
@@ -49,16 +50,16 @@ public class DynamicPlugin implements Interceptor {
      */
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        logger.debug("=========mybatis intercept() methodName: { " + invocation.getMethod() + " }==========");
+        logger.info("=========mybatis intercept() methodName: { " + invocation.getMethod() + " }==========");
 
         // 当前操作是否有事务
         boolean synchronizationActive = TransactionSynchronizationManager.isSynchronizationActive();
         // 获取执行参数
         Object[] args = invocation.getArgs();
         for (Object arg : args) {
-            logger.debug("=========== 参数 args: =======" + arg);
+            logger.info("=========== 参数 args: {} =======", arg);
         }
-        // 对应配置文件中的sql节点,select,update...
+        // 对应配置文件中的sql节点,select,update,delete...
         MappedStatement mappedStatement = (MappedStatement) args[0];
         DynamicDataSourceGlobal dataSource = null;
 
@@ -89,6 +90,7 @@ public class DynamicPlugin implements Interceptor {
                 // 放入map中
                 cacheMap.put(mappedStatement.getId(), dataSource);
             }
+            // 如果节点ID存在, 将存在的datasource放入ThreadLocal中
             HandleDataSource.putDataSource(dataSource);
         }
         // 放行
@@ -97,7 +99,7 @@ public class DynamicPlugin implements Interceptor {
 
     @Override
     public Object plugin(Object target) {
-        logger.debug("===========mybatis intercept plugin()=============: " + target);
+        logger.info("===========mybatis intercept plugin()=============: " + target);
 
         if (target instanceof Executor) {
             // 如果是Executor（执行增删改查操作），则拦截下来
@@ -112,6 +114,6 @@ public class DynamicPlugin implements Interceptor {
      */
     @Override
     public void setProperties(Properties properties) {
-        logger.debug("===========mybatis intercept setProperties()=============");
+        logger.info("===========mybatis intercept setProperties()=============");
     }
 }

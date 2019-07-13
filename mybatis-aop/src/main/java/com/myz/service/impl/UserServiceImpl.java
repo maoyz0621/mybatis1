@@ -35,9 +35,11 @@ public class UserServiceImpl implements IUserService {
         return userList;
     }
 
+    @Transactional
     @Override
     public void insertUser(UserVO userVO) {
         logger.debug("=============== service insertUser() ===============");
+
         int num = userVOMapper.insertuser(userVO);
         if (1 == num) {
             System.out.println("insert success");

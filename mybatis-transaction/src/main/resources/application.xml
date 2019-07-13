@@ -16,6 +16,6 @@
     <context:component-scan base-package="com.myz.*"/>
     <!-- 开启切面注解 -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
-    <import resource="classpath*:spring-mybatis-aop-plugin.xml"/>
+    <import resource="classpath*:spring-mybatis-transaction.xml"/>
 
 </beans>

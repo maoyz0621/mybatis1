@@ -32,3 +32,4 @@ hs_err_pid*
 /mybatis-aop-plugin/mybatisaopplugin.iml
 /mybatis-base/mybatis-base.iml
 /mybatis-plugin/mybatis-plugin.iml
+/mybatis-transaction/mybatistransaction.iml

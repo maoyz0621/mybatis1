@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -57,18 +56,6 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     private final Lock lock = new ReentrantLock();
 
-    public void setWriteDataSource(Object writeDataSource) {
-        this.writeDataSource = writeDataSource;
-    }
-
-    public void setReadDataSources(List<Object> readDataSources) {
-        this.readDataSources = readDataSources;
-    }
-
-    public void setReadDataSourcePollPattern(int readDataSourcePollPattern) {
-        this.readDataSourcePollPattern = readDataSourcePollPattern;
-    }
-
     /**
      * 初始化方法
      */
@@ -106,6 +93,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         logger.debug("============== determineCurrentLookupKey() ==============");
+
         DynamicDataSourceGlobal dataSource = HandleDataSource.getDataSource();
         if (dataSource == null || dataSource == DynamicDataSourceGlobal.WRITE || readDataSourceSize <= 0) {
             return DynamicDataSourceGlobal.WRITE.name();
@@ -136,5 +124,17 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         }
         // todo
         return dataSource.name() + index;
+    }
+
+    public void setWriteDataSource(Object writeDataSource) {
+        this.writeDataSource = writeDataSource;
+    }
+
+    public void setReadDataSources(List<Object> readDataSources) {
+        this.readDataSources = readDataSources;
+    }
+
+    public void setReadDataSourcePollPattern(int readDataSourcePollPattern) {
+        this.readDataSourcePollPattern = readDataSourcePollPattern;
     }
 }

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       default-init-method="init" default-destroy-method="destory"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 读取外部配置文件 ignore-unresolvable="true",否则Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'jdbc.driver' in value "${jdbc.driver}"-->
+    <context:property-placeholder ignore-unresolvable="true" ignore-resource-not-found="true"
+                                  location="classpath:db.properties"/>
+
+    <!--c3p0连接池,设置公共参数 -->
+    <bean id="abstractDataSource" abstract="true" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close"
+          init-method="init">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!-- 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时 -->
+        <property name="initialSize" value="${jdbc.initialSize}"/>
+        <!-- 最小连接池数量 -->
+        <property name="minIdle" value="${jdbc.minIdle}"/>
+        <!-- 最大连接池数量 -->
+        <property name="maxActive" value="${jdbc.maxActive}"/>
+        <!-- 有两个含义：1) Destroy线程会检测连接的间隔时间   2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}"/>
+        <!-- 连接池中连接，在时间段内一直空闲， 被逐出连接池的时间(默认为30分钟) -->
+        <property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}"/>
+        <!-- 用来检测连接是否有效的sql，要求是一个查询语句。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用。 -->
+        <property name="validationQuery" value="${jdbc.validationQuery}"/>
+        <!-- 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。 -->
+        <property name="testWhileIdle" value="${jdbc.testWhileIdle}"/>
+        <!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 -->
+        <property name="testOnBorrow" value="${jdbc.testOnBorrow}"/>
+        <!-- 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能 -->
+        <property name="testOnReturn" value="${jdbc.testOnReturn}"/>
+        <!-- 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。
+            在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100 -->
+        <property name="maxOpenPreparedStatements" value="${jdbc.maxOpenPreparedStatements}"/>
+        <!-- 对于长时间不使用的连接强制关闭  -->
+        <property name="removeAbandoned" value="${jdbc.removeAbandoned}"/>
+        <!-- 超过指定时间后开始关闭空闲连接 -->
+        <property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}"/>
+        <!-- 将当前关闭动作记录到日志 -->
+        <property name="logAbandoned" value="${jdbc.logAbandoned}"/>
+        <!-- 属性类型是字符串，通过别名的方式配置扩展插件，
+                常用的插件有：监控统计用的filter:stat 日志用的filter:log4j 防御sql注入的filter:wall -->
+        <!--<property name="filters" value="${jdbc.filtes}"/>-->
+    </bean>
+
+    <!--　读数据源　-->
+    <bean id="slaveDataSource" parent="abstractDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="url" value="${jdbc.url.read.a}"/>
+    </bean>
+
+    <!--　写数据源　-->
+    <bean id="masterDataSource" parent="abstractDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="url" value="${jdbc.url.write}"/>
+    </bean>
+
+    <!-- 动态数据源 -->
+    <bean id="dynamicDataSource" class="com.myz.util.DynamicDataSource">
+        <property name="writeDataSource" ref="masterDataSource"/>
+        <property name="readDataSource" ref="slaveDataSource"/>
+        <!-- 默认数据源 -->
+        <property name="defaultTargetDataSource" ref="masterDataSource"/>
+    </bean>
+
+    <!-- 配置数据源懒加载 -->
+    <!--（1）、代理了目标数据源 dataSource 的所有方法，其中在 invoke 方法，Spring使用了排除法；
+        （2）、只有 dataSource 获取到Connection之后，在执行 java.sql.Connection#prepareStatement(java.lang.String) 时候，Spring 才会主动去数据库链接池中获取 Connection ，这样做的好处就是提高数据库链接的使用率和效率；
+        （3）、LazyConnectionDataSourceProxy 经常会被用在一些分库分表、多数据源事务的应用当中；
+        （4）、多数据源的事务管理解决方案，很多采用了同时开启所有数据源事务、同时提交的策略，例如：阿里的 cobar 解决方案等；
+        （5）、如果我们的数据源是使用了 LazyConnectionDataSourceProxy 则在执行 Connection#prepareStatement 之前，spring 是不会向数据库连接池获取数据库链接的-->
+    <bean id="dataSourceProxy" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+        <property name="targetDataSource" ref="dynamicDataSource"/>
+    </bean>
+
+    <!-- 开启事物注解 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- 事务控制 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceProxy"/>
+    </bean>
+
+    <!-- sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceProxy"/>
+        <!--　mybatis配置文件　-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--　扫描mapper配置文件　-->
+        <property name="mapperLocations" value="classpath:com/myz/dao/UserVOMapper.xml"/>
+    </bean>
+
+
+    <!-- 配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 注入sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描Dao接口包 -->
+        <property name="basePackage" value="com.myz.dao"/>
+    </bean>
+
+    <!--　执行批量插入 -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <constructor-arg name="executorType" value="BATCH"/>
+    </bean>
+
+</beans>

@@ -48,7 +48,6 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     /**
-     * 在Mybatis的拦截器Interceptor.intercept()之后执行
      * determine（确定）
      */
     @Override
@@ -56,11 +55,8 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         logger.debug("============== determineCurrentLookupKey() ==============");
 
         DynamicDataSourceGlobal dataSource = HandleDataSource.getDataSource();
-
-        logger.info("*********************determineCurrentLookupKey , Now dataSource is [{}] *******************", dataSource);
-
-        // 当没有开启事务实时,默认使用主数据库
-        if (dataSource == null || dataSource == DynamicDataSourceGlobal.WRITE) {
+        logger.info("******************determineCurrentLookupKey now is [{}]*******************", dataSource);
+        if (dataSource == DynamicDataSourceGlobal.WRITE || dataSource == null) {
             return DynamicDataSourceGlobal.WRITE.name();
         }
 

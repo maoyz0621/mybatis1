@@ -13,7 +13,5 @@
     <packaging>jar</packaging>
 
     <name>mybatis-aop-plugin</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
 
 </project>

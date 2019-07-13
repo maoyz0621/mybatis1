@@ -1,4 +1,4 @@
-package com.myz.test;
+package com.myz;
 
 import com.myz.entity.UserVO;
 import com.myz.service.IUserService;

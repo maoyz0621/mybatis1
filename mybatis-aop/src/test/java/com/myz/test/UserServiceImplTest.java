@@ -30,9 +30,8 @@ public class UserServiceImplTest {
   }
 
   @Test
-  public void insertuser() throws Exception {
+  public void insertUser() throws Exception {
     UserVO userVO = new UserVO();
-    userVO.setId(1L);
     userVO.setUsername("maoyz");
     userVO.setPassword("123");
     userVO.setSex('1');

@@ -11,8 +11,7 @@ import java.util.Properties;
 /**
  * 编写插件
  * 1 实现Interceptor接口
- * 2 使用@Intercepts完成插件签名(四大组件)
- * 哪个插件　哪个方法　哪个参数
+ * 2 使用@Intercepts完成插件签名(四大组件) 哪个插件　哪个方法　哪个参数
  * 3 注册到全局配置文件中
  */
 @Intercepts(

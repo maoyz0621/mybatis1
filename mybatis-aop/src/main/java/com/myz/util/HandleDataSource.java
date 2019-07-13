@@ -4,8 +4,7 @@
 package com.myz.util;
 
 import com.myz.constant.DynamicDataSourceGlobal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 用户的请求和操作的数据源绑定
@@ -13,13 +12,13 @@ import org.slf4j.LoggerFactory;
  * @author maoyz on 2018/6/21
  * @version: v1.0
  */
+@Slf4j
 public class HandleDataSource {
 
-    private static final Logger logger = LoggerFactory.getLogger(HandleDataSource.class);
     /**
      * 当前线程，即用户请求
      */
-    private static final ThreadLocal<DynamicDataSourceGlobal> handle = new ThreadLocal<DynamicDataSourceGlobal>();
+    private static final ThreadLocal<DynamicDataSourceGlobal> handle = new ThreadLocal<>();
 
     /**
      * 绑定数据源
@@ -27,7 +26,7 @@ public class HandleDataSource {
      * 需在调用服务层之前进行绑定
      */
     public static void putDataSource(DynamicDataSourceGlobal dataSource) {
-        logger.debug("========= putDataSource =========");
+        log.debug("========= putDataSource =========");
         handle.set(dataSource);
     }
 
@@ -35,7 +34,7 @@ public class HandleDataSource {
      * 获取数据源
      */
     public static DynamicDataSourceGlobal getDataSource() {
-        logger.debug("========= getDataSource =========");
+        log.debug("========= getDataSource =========");
         return handle.get();
     }
 

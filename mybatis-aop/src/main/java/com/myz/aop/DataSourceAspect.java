@@ -65,6 +65,7 @@ public class DataSourceAspect {
                         // 放入ThreadLocal中
                         HandleDataSource.putDataSource(targetDataSource.value());
                     } else {
+                        // 默认
                         HandleDataSource.putDataSource(DynamicDataSourceGlobal.READ);
                     }
                 } else {
