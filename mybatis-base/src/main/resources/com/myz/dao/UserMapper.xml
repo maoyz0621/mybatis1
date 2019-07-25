@@ -19,11 +19,16 @@
         </where>
     </select>
 
-    <!--　多参数查询　-->
+    <!--　多参数查询　,使用if 条件判断的参数需要加上 @Param注解 -->
     <select id="selectByIdAndGender" resultType="com.myz.entity.User">
         SELECT * FROM t_user
         <where>
-            id = #{id} and gender=#{gender}
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="gender != null and gender.trim() != ''">
+                and gender = #{gender}
+            </if>
         </where>
     </select>
 
