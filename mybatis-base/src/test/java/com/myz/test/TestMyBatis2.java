@@ -28,8 +28,9 @@ public class TestMyBatis2 {
     private SqlSession sqlSession = null;
     private UserDao userDao = null;
     private RoleDao roleDao = null;
+
     /**
-     *创建sqlSessionFactory
+     * 创建sqlSessionFactory
      */
     @Before
     public void test() throws IOException {
@@ -43,24 +44,24 @@ public class TestMyBatis2 {
     }
 
     @After
-    public void test_(){
+    public void test_() {
         this.sqlSession.close();
     }
 
     /**
-     *　association属性查询
+     * 　association属性查询
      */
     @Test
-    public void test1() throws SQLException{
-        User user = this.userDao.selectById(2);
+    public void test1() throws SQLException {
+        User user = this.userDao.selectById(1);
         System.out.println(user);
     }
 
     /**
-     *  association级联查询
+     * association级联查询
      */
     @Test
-    public void test2() throws SQLException{
+    public void test2() throws SQLException {
         List<User> users = this.userDao.selectAll();
         for (User user : users) {
             System.out.println(user);
@@ -82,7 +83,7 @@ public class TestMyBatis2 {
      * collection关联属性查询，使用左外链接查询
      */
     @Test
-    public void test4(){
+    public void test4() {
         Role role = this.roleDao.selectAllUserById(1);
         System.out.println(role);
     }
@@ -91,14 +92,14 @@ public class TestMyBatis2 {
      * collection分步查询
      */
     @Test
-    public void test5(){
+    public void test5() {
         Role role = this.roleDao.selectAllUserByIdStep(1);
         System.out.println(role.getDescription());
         System.out.println(role.getUsers());
     }
 
     @Test
-    public void test6(){
+    public void test6() {
         Role role = this.roleDao.selectByName("mmm");
         System.out.println(role);
     }

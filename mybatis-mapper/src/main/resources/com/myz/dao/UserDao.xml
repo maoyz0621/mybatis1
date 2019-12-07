@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--　
+    namespace:命名空间,为接口全类名
+    使用resultMap-->
+<mapper namespace="com.myz.dao.UserDao">
+
+    <!--　联合查询：级联属性-->
+    <resultMap id="myUser" type="com.myz.entity.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <!--　级联属性　-->
+        <result column="role_id" property="role.roleId"/>
+        <result column="role_name" property="role.roleName"/>
+        <result column="description" property="role.description"/>
+    </resultMap>
+
+    <!-- 联合查询：association联合对象-->
+    <resultMap id="myUser1" type="com.myz.entity.User">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <!--property:属性对象　
+            javaType:Bean对象　-->
+        <association property="role" javaType="com.myz.entity.Role">
+            <id column="role_id" property="roleId"/>
+            <result column="role_name" property="roleName"/>
+            <result column="description" property="description"/>
+        </association>
+    </resultMap>
+
+    <!--　联合查询，分布查询　-->
+    <resultMap id="userAndRole" type="com.myz.entity.User">
+        <id column="id" property="id"/>
+        <result column="last_name" property="lastName"/>
+        <result column="gender" property="gender"/>
+        <result column="email" property="email"/>
+        <!--　select:当前属性指定的方法查询
+              property:属性对象
+              column:指定那一列的值传入select方法内
+        　-->
+        <association column="role_id" property="role"
+                     select="com.myz.dao.RoleDao.selectById"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="myUser">
+        SELECT user.id,user.last_name,user.gender,user.email,
+        role.role_id,role.role_name, role.description
+        FROM t_user user,t_role role
+        <where>
+            user.role_id = role.role_id AND user.id=#{id}
+        </where>
+    </select>
+
+    <select id="selectAll" resultMap="myUser1">
+        SELECT * FROM t_user user ,t_role role
+        <where>
+            user.role_id = role.role_id
+        </where>
+    </select>
+
+
+    <select id="selectByIdAndRole" resultMap="userAndRole">
+        select * from t_user
+        <where>
+            id=#{id}
+        </where>
+    </select>
+
+    <!--　根据role_id查询所有的User -->
+    <select id="selectAllByRoleId" resultType="com.myz.entity.User">
+        SELECT * FROM t_user
+        <where>
+            role_id = #{roleId}
+        </where>
+    </select>
+
+</mapper>

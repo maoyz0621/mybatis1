@@ -19,8 +19,9 @@ import java.sql.SQLException;
 public class TestMyBatis {
 
     private SqlSessionFactory sqlSessionFactory;
+
     /**
-     *创建sqlSessionFactory
+     * 创建sqlSessionFactory
      */
     @Before
     public void before() throws IOException {
@@ -35,15 +36,15 @@ public class TestMyBatis {
      * 之前用法，使用selectOne()
      */
     @Test
-    public void test1(){
+    public void test1() {
         // 创建session
         SqlSession sqlSession = this.sqlSessionFactory.openSession();
         /*
          * 1 唯一标示
          * 2 查询参数
          */
-        User user = sqlSession.selectOne("com.myz.dao.Mapper.selectById1",1);
-        System.out.println(user.getLastName());
+        User user = sqlSession.selectOne("com.myz.dao.UserDao.selectById", 1);
+        System.out.println(user);
         sqlSession.close();
     }
 
@@ -60,9 +61,10 @@ public class TestMyBatis {
          * 2 调用接口的方法
          */
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-//        System.out.println(userMapper.getClass());  //　com.sun.proxy.$Proxy5 动态绑定
-        User user = userMapper.selectById(3);
-        System.out.println(user.getEmail());
+        System.out.println(userMapper);
+        System.out.println(userMapper.getClass());  //　com.sun.proxy.$Proxy5 动态绑定
+        User user = userMapper.selectById(1, "a");
+        System.out.println(user);
         sqlSession.close();
     }
 
@@ -70,7 +72,7 @@ public class TestMyBatis {
      * 测试本地缓存localCacheScope
      */
     @Test
-    public void test3() throws SQLException{
+    public void test3() throws SQLException {
         SqlSession sqlSession = this.sqlSessionFactory.openSession(true);
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 

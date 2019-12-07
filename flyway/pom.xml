@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mybatis1</artifactId>
+        <groupId>com.myz</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>flyway</artifactId>
+    <name>flyway</name>
+
+    <properties>
+        <!-- TODO 方法1 配置properties, 以flyway开头 -->
+        <!-- Properties are prefixed with flyway.-->
+        <flyway.user>root</flyway.user>
+        <flyway.password>root</flyway.password>
+        <flyway.url>jdbc:mysql://localhost:13306/mybatis?serverTimezone=Asia/Shanghai&amp;useSSL=false&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;maxReconnects=10&amp;failOverReadOnly=false&amp;useAffectedRows=true&amp;allowMultiQueries=true&amp;jdbcCompliantTruncation=false</flyway.url>
+        <!-- List are defined as comma-separated values -->
+        <flyway.schemas>mybatis</flyway.schemas>
+        <!--Individual placeholders are prefixed by flyway.placeholders.-->
+        <flyway.placeholders.keyABC>valueXYZ</flyway.placeholders.keyABC>
+        <flyway.placeholders.otherplaceholder>value123</flyway.placeholders.otherplaceholder>
+    </properties>
+
+    <dependencies>
+        <!--　mysql数据库驱动　-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <!-- 数据库版本管理 -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- TODO 方法2 maven插件形式 -->
+            <plugin>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+                <!--<configuration>-->
+                <!-- TODO 如果已创建mybatis的db时, 使用此url -->
+                <!--<url>jdbc:mysql://localhost:13306/mybatis?serverTimezone=Asia/Shanghai&amp;useSSL=false&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;maxReconnects=10&amp;failOverReadOnly=false&amp;useAffectedRows=true&amp;allowMultiQueries=true&amp;jdbcCompliantTruncation=false</url>-->
+                <!--<user>root</user>-->
+                <!--<password>root</password>-->
+                <!--</configuration>-->
+
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.1.0</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
