@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 
 /*
@@ -75,6 +76,7 @@ public class TestMyBatis2 {
     @Test
     public void test3() throws SQLException {
         User user = this.userDao.selectByIdAndRole(2);
+        System.out.println(user);
         System.out.println(user.getEmail());
         System.out.println(user.getRole().getDescription());
     }
@@ -94,13 +96,17 @@ public class TestMyBatis2 {
     @Test
     public void test5() {
         Role role = this.roleDao.selectAllUserByIdStep(1);
+        System.out.println(role);
         System.out.println(role.getDescription());
         System.out.println(role.getUsers());
     }
 
     @Test
     public void test6() {
-        Role role = this.roleDao.selectByName("mmm");
+        Role role = this.roleDao.selectByName("a");
         System.out.println(role);
+        System.out.println("=========================");
+        Map map = roleDao.selectByNameMap("mmm11");
+        System.out.println(map);
     }
 }

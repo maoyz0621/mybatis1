@@ -3,7 +3,7 @@
 <mapper namespace="com.myz.dao.RoleMapper">
 
     <resultMap id="dynamicRole" type="com.myz.entity.Role">
-        <id column="role_id" property="roleId"/>
+        <id column="id" property="id"/>
         <result column="role_name" property="roleName"/>
         <result column="description" property="description"/>
         <collection property="users" column="role_id"
@@ -90,11 +90,44 @@
 
     <!--　指定区间条件查询　-->
     <select id="selectDynamicByIds" resultMap="dynamicRole">
-        SELECT role_id , role_name, role_name , description
+        SELECT id , role_name, role_name , description
         FROM t_role
         <where>
-            role_id IN
-            <foreach collection="list" separator="," item="ids" open="(" close=")">
+            id IN
+            <foreach collection="list" index="index" separator="," item="ids" open="(" close=")">
+                #{ids}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectDynamicByIdsCollection" resultType="com.myz.entity.Role">
+        SELECT id , role_name, role_name , description
+        FROM t_role
+        <where>
+            id IN
+            <foreach collection="collection" index="index" separator="," item="ids" open="(" close=")">
+                #{ids}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectDynamicByIdsSet" resultType="com.myz.entity.Role">
+        SELECT id , role_name, role_name , description
+        FROM t_role
+        <where>
+            id IN
+            <foreach collection="collection" index="index" separator="," item="ids" open="(" close=")">
+                #{ids}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectDynamicByIdsArray" resultType="com.myz.entity.Role">
+        SELECT id , role_name, role_name , description
+        FROM t_role
+        <where>
+            id IN
+            <foreach collection="array" index="index" separator="," item="ids" open="(" close=")">
                 #{ids}
             </foreach>
         </where>

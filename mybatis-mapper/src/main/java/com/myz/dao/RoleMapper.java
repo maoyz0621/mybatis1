@@ -2,7 +2,9 @@ package com.myz.dao;
 
 import com.myz.entity.Role;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 动态SQL查询
@@ -22,5 +24,11 @@ public interface RoleMapper {
     void insertDynamic(List<Role> roles);
 
     //<foreach>查询指定id内数据
+    List<Role> selectDynamicByIdsCollection(Collection<Integer> ids);
+
     List<Role> selectDynamicByIds(List<Integer> ids);
+
+    List<Role> selectDynamicByIdsSet(Set<Integer> ids);
+
+    List<Role> selectDynamicByIdsArray(Integer[] ids);
 }

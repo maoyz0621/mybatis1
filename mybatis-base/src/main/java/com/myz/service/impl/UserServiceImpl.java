@@ -31,14 +31,14 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<UserVO> getUser(Serializable id) {
         logger.debug("=============== service getUser() ===============");
-        List<UserVO> userList = userVOMapper.getuser(id);
+        List<UserVO> userList = userVOMapper.getUser(id);
         return userList;
     }
 
     @Override
     public void insertUser(UserVO userVO) {
         logger.debug("=============== service insertUser() ===============");
-        int num = userVOMapper.insertuser(userVO);
+        int num = userVOMapper.insertUser(userVO);
         if (1 == num) {
             System.out.println("insert success");
         }

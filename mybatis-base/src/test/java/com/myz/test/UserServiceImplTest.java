@@ -18,23 +18,23 @@ import java.util.List;
 @ContextConfiguration("classpath:application.xml")
 public class UserServiceImplTest {
 
-  @Autowired
-  private IUserService userService;
+    @Autowired
+    private IUserService userService;
 
-  @Test
-  public void getUser() throws Exception {
-    List<UserVO> user = userService.getUser(1L);
-    System.out.println("查询结果:" + user);
-  }
+    @Test
+    public void getUser() throws Exception {
+        List<UserVO> user = userService.getUser(1L);
+        System.out.println("查询结果:" + user);
+    }
 
-  @Test
-  public void insertuser() throws Exception {
-    UserVO userVO = new UserVO();
-    userVO.setId(1L);
-    userVO.setUsername("maoyz");
-    userVO.setPassword("123");
-    userVO.setSex('1');
-    userService.insertUser(userVO);
-  }
+    @Test
+    public void insertuser() throws Exception {
+        UserVO userVO = new UserVO();
+        userVO.setId(1L);
+        userVO.setUsername("maoyz");
+        userVO.setPassword("123");
+        userVO.setSex('1');
+        userService.insertUser(userVO);
+    }
 
 }

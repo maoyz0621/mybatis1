@@ -1,6 +1,7 @@
 package com.myz.dao;
 
 import com.myz.entity.User;
+import com.myz.entity.UserPO;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
@@ -39,12 +40,17 @@ public interface UserMapper {
     /**
      * 　根据id查询
      */
-    User selectById(Integer id) throws SQLException;
+    User selectById(@Param("id") Integer id) throws SQLException;
 
     /**
-     * 参数不同的同名方法
+     * 重载
      */
-    User selectById(Integer id, String lastName) throws SQLException;
+    User selectById(@Param("lastName") String lastName) throws SQLException;
+
+    /**
+     * 重载
+     */
+    User selectById(@Param("id") Integer id, @Param("lastName") String lastName) throws SQLException;
 
     /**
      * 　根据id和gender查询
@@ -69,10 +75,14 @@ public interface UserMapper {
      */
     void insertUser(User user) throws SQLException;
 
+    int batchInsert(@Param("users") List<UserPO> user) throws SQLException;
+
     /*
      * 更新
      */
     void updateUser(User user) throws SQLException;
+
+    int batchUpdate(List<UserPO> user) throws SQLException;
 
     /*
      * 删除

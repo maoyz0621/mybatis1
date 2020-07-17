@@ -10,11 +10,11 @@ import java.util.List;
 
 /**
  * @author maoyz on 2018/6/21
- * @version: v1.0
+ * @version v1.0
  */
 public interface UserVOMapper {
 
-    List<UserVO> getuser(Serializable id);
+    List<UserVO> getUser(Serializable id);
 
-    int insertuser(UserVO userVO);
+    int insertUser(UserVO userVO);
 }

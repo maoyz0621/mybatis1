@@ -15,6 +15,7 @@
         <module>mybatis-transaction</module>
         <module>mybatis-mapper</module>
         <module>flyway</module>
+        <module>mybatis-generate</module>
     </modules>
 
     <properties>
@@ -22,7 +23,7 @@
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <mybatis.version>3.4.4</mybatis.version>
-        <mysql.version>5.1.42</mysql.version>
+        <mysql.version>8.0.20</mysql.version>
         <flyway.version>6.1.0</flyway.version>
     </properties>
 
