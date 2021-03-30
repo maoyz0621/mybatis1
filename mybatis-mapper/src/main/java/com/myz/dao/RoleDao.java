@@ -2,12 +2,16 @@ package com.myz.dao;
 
 import com.myz.entity.Role;
 
+import java.util.Map;
+
 /**
  * @author maoyz
  */
 public interface RoleDao {
 
     Role selectByName(String roleName);
+
+    Map selectByNameMap(String roleName);
 
     Role selectById(Integer roleId);
 

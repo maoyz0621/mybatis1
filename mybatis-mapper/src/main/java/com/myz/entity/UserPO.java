@@ -1,20 +1,19 @@
+/*
+ * Copyright (C) 2020, All rights Reserved, Designed By
+ * @author: maoyz
+ * @Copyright: 2020-07-17 16:26  Inc. All rights reserved.
+ */
 package com.myz.entity;
 
-/*
- * Created by maoyz on 17-9-12.
+/**
+ * @author maoyz
  */
-
-public class User {
-
+public class UserPO {
     private Long id;
     private String lastName;
     private String gender;
     private String email;
-    //　多对一关系(association)
-    private Role role;
-
-    public User() {
-    }
+    private Long roleId;
 
     public Long getId() {
         return id;
@@ -48,22 +47,11 @@ public class User {
         this.email = email;
     }
 
-    public Role getRole() {
-        return role;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", lastName='" + lastName + '\'' +
-                ", gender='" + gender + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                '}';
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 }

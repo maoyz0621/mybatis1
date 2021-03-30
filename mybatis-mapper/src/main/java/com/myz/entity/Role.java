@@ -6,18 +6,18 @@ import java.util.List;
  * Created by maoyz on 17-9-20.
  */
 public class Role {
-    private Integer roleId;
+    private Long id;
     private String roleName;
     private String description;
     //一对多关系(collection)
     private List<User> users;
 
-    public Integer getRoleId() {
-        return roleId;
+    public Long getId() {
+        return id;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getRoleName() {
@@ -46,11 +46,12 @@ public class Role {
 
     @Override
     public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                ", description='" + description + '\'' +
-                ", users=" + users +
-                '}';
+        final StringBuilder sb = new StringBuilder("Role{");
+        sb.append("id=").append(id);
+        sb.append(", roleName='").append(roleName).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", users=").append(users);
+        sb.append('}');
+        return sb.toString();
     }
 }

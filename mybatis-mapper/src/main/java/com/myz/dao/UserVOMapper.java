@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @author maoyz on 2018/6/21
- * @version: v1.0
+ * @version v1.0
  */
 public interface UserVOMapper {
 

@@ -4,7 +4,7 @@
 <mapper namespace="com.myz.dao.RoleDao">
 
     <resultMap id="role" type="com.myz.entity.Role">
-        <id column="role_id" property="roleId"/>
+        <id column="id" property="id"/>
         <result column="role_name" property="roleName"/>
         <result column="description" property="description"/>
     </resultMap>
@@ -12,13 +12,13 @@
     <select id="selectById" resultMap="role">
         SELECT * from t_role
         <where>
-            role_id=#{roleId}
+            id=#{roleId}
         </where>
     </select>
 
     <!--　嵌套查询collection -->
     <resultMap id="allUsers" type="com.myz.entity.Role">
-        <id column="role_id" property="roleId"/>
+        <id column="role_id" property="id"/>
         <result column="role_name" property="roleName"/>
         <result column="description" property="description"/>
         <!--　collection关联属性,一对多
@@ -34,19 +34,19 @@
     </resultMap>
     <!--　左外链接查询　-->
     <select id="selectAllUserById" resultMap="allUsers">
-        SELECT role.role_id role_id, role.role_name role_name, role.description,
-        user.id id, user.last_name last_name, user.gender gender, user.email email
+        SELECT role.id role_id, role.role_name role_name, role.description,
+        user.last_name last_name, user.gender gender, user.email email
         FROM t_role role
         LEFT JOIN t_user user
-        ON role.role_id = user.role_id
+        ON role.id = user.role_id
         <where>
-            role.role_id=#{roleId}
+            role.id=#{roleId}
         </where>
     </select>
 
     <!-- collection分步查询 -->
     <resultMap id="allUsersStep" type="com.myz.entity.Role">
-        <id column="role_id" property="roleId"/>
+        <id column="id" property="id"/>
         <result column="role_name" property="roleName"/>
         <result column="description" property="description"/>
         <!--　collection分步查询
@@ -54,7 +54,7 @@
               column:指定哪一列的值传入select方法内
               fetchType:eager/lazy  立即加载/延迟加载
         -->
-        <collection property="users" column="role_id"
+        <collection property="users" column="id"
                     select="com.myz.dao.UserDao.selectAllByRoleId"
                     fetchType="eager"/>
     </resultMap>
@@ -62,11 +62,25 @@
     <select id="selectAllUserByIdStep" resultMap="allUsersStep">
         SELECT * from t_role
         <where>
-            role_id = #{roleId}
+            id = #{roleId}
         </where>
     </select>
 
     <select id="selectByName" resultMap="role">
+        SELECT * from t_role
+        <where>
+            role_name=#{roleName}
+        </where>
+    </select>
+
+    <!--<select id="selectByNameMap" resultType="java.util.Map">-->
+    <!--    SELECT * from t_role-->
+    <!--    <where>-->
+    <!--        role_name=#{roleName}-->
+    <!--    </where>-->
+    <!--</select>-->
+
+    <select id="selectByNameMap" resultType="java.util.HashMap">
         SELECT * from t_role
         <where>
             role_name=#{roleName}

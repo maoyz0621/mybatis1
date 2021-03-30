@@ -16,7 +16,13 @@
     <select id="selectById" resultType="com.myz.entity.User">
         SELECT id, last_name, gender, email from t_user
         <where>
-            id = #{id}
+            <if test="id != null">
+                id = #{id}
+            </if>
+
+            <if test="lastName != null">
+                AND last_name = #{lastName}
+            </if>
         </where>
     </select>
 
@@ -81,7 +87,21 @@
 
     <!--　调用自增主键useGeneratedKeys,keyProperty主键属性　-->
     <insert id="insertUser" parameterType="com.myz.entity.User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_user last_name, gender, email VALUES (#{lastName},#{gender},#{email})
+        INSERT INTO t_user (last_name, gender, email)
+        VALUES (#{lastName},
+                #{gender},
+                #{email})
+    </insert>
+
+    <insert id="batchInsert" parameterType="com.myz.entity.UserPO">
+        INSERT INTO t_user (last_name, gender, email, role_id)
+        VALUES
+        <foreach collection="users" item="item" separator=",">
+            (#{item.lastName},
+            #{item.gender},
+            #{item.gender},
+            #{item.roleId})
+        </foreach>
     </insert>
 
     <update id="updateUser" useGeneratedKeys="true" keyProperty="id">
@@ -89,6 +109,15 @@
         <where>
             id=#{id}
         </where>
+    </update>
+
+    <update id="batchUpdate" parameterType="com.myz.entity.UserPO">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE t_user SET last_name=#{item.lastName},gender=#{item.gender}, email=#{item.email}
+            <where>
+                id=#{item.id}
+            </where>
+        </foreach>
     </update>
 
     <delete id="deleteUser">
