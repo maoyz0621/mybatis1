@@ -7,17 +7,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:component-scan base-package="com.myz.service">
+    <context:component-scan base-package="com.myz.base.service">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
     </context:component-scan>
 
     <!--　1　配置事务管理 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="slaveDataSourceA"/>
+        <property name="dataSource" ref="masterDataSource"/>
     </bean>
 
     <!--　2 配置事务属性 -->
-    <tx:advice id="teAdvice" transaction-manager="transactionManager">
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="get*" read-only="true"/>
             <tx:method name="select*" read-only="true"/>
@@ -27,8 +27,8 @@
 
     <!-- 3 事务切入点　-->
     <aop:config>
-        <aop:pointcut id="txPointcut" expression="execution(* com.myz.service..*(..))"/>
-        <aop:advisor advice-ref="teAdvice" pointcut-ref="txPointcut"/>
+        <aop:pointcut id="txPointcut" expression="execution(* com.myz.base.service..*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config>
 
 </beans>

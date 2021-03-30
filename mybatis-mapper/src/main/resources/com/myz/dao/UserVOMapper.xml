@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.myz.dao.UserVOMapper">
 
-    <insert id="insertuser">
+    <insert id="insertUser">
     INSERT INTO t_user VALUES (#{id},#{username},#{password},#{sex});
   </insert>
 
-    <select id="getuser" resultType="com.myz.entity.UserVO">
+    <select id="getUser" resultType="com.myz.entity.UserVO">
     SELECT * from t_user WHERE id = #{id};
   </select>
 </mapper>

@@ -6,23 +6,23 @@
 
     <!--　注册自定义插件　-->
     <plugins>
-        <plugin interceptor="com.myz.plugin.MyPlugin1" >
+        <plugin interceptor="com.myz.base.plugin.MyPlugin1" >
             <!--　property属性会传入插件setProperties中 -->
             <property name="username1" value="myz1"/>
             <property name="password1" value="hahaha1"/>
         </plugin>
-        <plugin interceptor="com.myz.plugin.MyPlugin2" >
+        <plugin interceptor="com.myz.base.plugin.MyPlugin2" >
             <!--　property属性会传入插件setProperties中 -->
             <property name="username2" value="myz2"/>
             <property name="password2" value="hahaha2"/>
         </plugin>
-        <plugin interceptor="com.myz.plugin.MyPlugin3" >
+        <plugin interceptor="com.myz.base.plugin.MyPlugin3" >
             <!--　property属性会传入插件setProperties中 -->
             <property name="username2" value="myz2"/>
             <property name="password2" value="hahaha2"/>
         </plugin>
 
-        <plugin interceptor="com.myz.plugin.DynamicPlugin"/>
+        <plugin interceptor="com.myz.base.plugin.DynamicPlugin"/>
     </plugins>
 
 

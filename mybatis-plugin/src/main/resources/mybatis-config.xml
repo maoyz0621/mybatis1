@@ -46,12 +46,12 @@
 
     <!--&lt;!&ndash;　注册自定义插件　&ndash;&gt;-->
     <plugins>
-        <!--<plugin interceptor="com.myz.plugin.MyPlugin1" >-->
+        <!--<plugin interceptor="com.myz.base.plugin.MyPlugin1" >-->
             <!--&lt;!&ndash;　property属性会传入插件setProperties中 &ndash;&gt;-->
             <!--<property name="username1" value="myz1"/>-->
             <!--<property name="password1" value="hahaha1"/>-->
         <!--</plugin>-->
-        <!--<plugin interceptor="com.myz.plugin.MyPlugin2" >-->
+        <!--<plugin interceptor="com.myz.base.plugin.MyPlugin2" >-->
             <!--&lt;!&ndash;　property属性会传入插件setProperties中 &ndash;&gt;-->
             <!--<property name="username2" value="myz2"/>-->
             <!--<property name="password2" value="hahaha2"/>-->

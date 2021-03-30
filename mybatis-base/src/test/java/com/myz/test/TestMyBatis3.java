@@ -1,10 +1,10 @@
 package com.myz.test;
 
-import com.myz.dao.RoleDao;
 import com.myz.dao.RoleMapper;
 import com.myz.dao.UserDao;
+import com.myz.dao.UserVOMapper;
 import com.myz.entity.Role;
-import com.myz.entity.User;
+import com.myz.entity.UserVO;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +29,7 @@ public class TestMyBatis3 {
     private SqlSession sqlSession = null;
     private RoleMapper roleMapper = null;
     private UserDao userDao = null;
+    private UserVOMapper userVOMapper = null;
 
     /**
      *创建sqlSessionFactory
@@ -43,6 +43,7 @@ public class TestMyBatis3 {
         this.sqlSession = this.sqlSessionFactory.openSession(true);
         this.roleMapper = this.sqlSession.getMapper(RoleMapper.class);
         this.userDao = this.sqlSession.getMapper(UserDao.class);
+        this.userVOMapper = this.sqlSession.getMapper(UserVOMapper.class);
 
     }
 
@@ -122,6 +123,22 @@ public class TestMyBatis3 {
         ids.add(5);
         List<Role> roles = this.roleMapper.selectDynamicByIds(ids);
         System.out.println(roles);
+    }
 
+    /**
+     * 测试<foreach>标签语句
+     */
+    @Test
+    public void testEncrypt(){
+        List<UserVO> user = userVOMapper.getUser(1111L);
+        System.out.println(user);
+
+        System.out.println("======================");
+
+        UserVO userVO = new UserVO();
+        userVO.setId(1111L);
+        userVO.setPassword("123");
+        userVO.setUsername("maoyz");
+        userVOMapper.insertUser(userVO);
     }
 }

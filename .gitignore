@@ -24,12 +24,14 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-/.idea/
+.idea
+
 /mybatis1.iml
-/mybatis.iml
 /mybatis-aop/mybatis-aop.iml
 /mybatis-aop-plugin/mybatis-aop-plugin.iml
 /mybatis-aop-plugin/mybatisaopplugin.iml
 /mybatis-base/mybatis-base.iml
 /mybatis-plugin/mybatis-plugin.iml
-/mybatis-transaction/mybatistransaction.iml
+/mybatis-transaction/mybatis-transaction.iml
+/mybatis-mapper/mybatis-mapper.iml
+/flyway/flyway.iml

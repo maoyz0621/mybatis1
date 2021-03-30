@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface UserVOMapper {
 
-    List<UserVO> getuser(Serializable id);
+    List<UserVO> getUser(Serializable id);
 
-    int insertuser(UserVO userVO);
+    int insertUser(UserVO userVO);
 }

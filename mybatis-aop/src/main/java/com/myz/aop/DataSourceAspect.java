@@ -35,7 +35,7 @@ public class DataSourceAspect {
     private final Logger logger = LoggerFactory.getLogger(DataSourceAspect.class);
 
     // 定义在service包和所有子包里的任意类的任意方法的执行：
-    @Pointcut(value = "execution(* com.myz.service..*.*(..))")
+    @Pointcut(value = "execution(* com.myz.base.service..*.*(..))")
     public void joinPointMethod() {
     }
 
