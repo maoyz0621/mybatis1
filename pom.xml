@@ -16,6 +16,7 @@
         <module>mybatis-mapper</module>
         <module>flyway</module>
         <module>mybatis-generate</module>
+        <module>mysql-screw</module>
     </modules>
 
     <properties>

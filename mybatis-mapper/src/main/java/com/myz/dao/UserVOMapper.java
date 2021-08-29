@@ -17,4 +17,6 @@ public interface UserVOMapper {
     List<UserVO> getUser(Serializable id);
 
     int insertUser(UserVO userVO);
+
+    int updateUser(UserVO userVO);
 }

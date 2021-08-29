@@ -3,10 +3,19 @@
 <mapper namespace="com.myz.dao.UserVOMapper">
 
     <insert id="insertUser">
-    INSERT INTO t_user VALUES (#{id},#{username},#{password},#{sex});
+    INSERT INTO t_user_1 VALUES (#{id},#{username},#{password},#{sex});
   </insert>
 
     <select id="getUser" resultType="com.myz.entity.UserVO">
-    SELECT * from t_user WHERE id = #{id};
+    SELECT * from t_user_1 WHERE id = #{id};
   </select>
+
+    <update id="updateUser">
+        UPDATE t_user_1 SET password=#{password}
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+
 </mapper>
