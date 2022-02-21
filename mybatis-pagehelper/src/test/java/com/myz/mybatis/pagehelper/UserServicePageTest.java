@@ -32,7 +32,11 @@ public class UserServicePageTest {
 
     @Test
     public void testPageInfo() {
-        userServicePage.pageInfo(1, 10);
-        userServicePage.pageInfo(2, 10);
+        userServicePage.pageInfo(2, 5);
+    }
+
+    @Test
+    public void testPageInfoCopy() {
+        userServicePage.pageInfoCopy(2, 5);
     }
 }
