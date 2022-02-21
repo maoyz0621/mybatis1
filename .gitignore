@@ -35,3 +35,4 @@ hs_err_pid*
 /mybatis-transaction/mybatis-transaction.iml
 /mybatis-mapper/mybatis-mapper.iml
 /flyway/flyway.iml
+./target/

@@ -27,7 +27,7 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserVOMapper userVOMapper;
 
-    // @Transactional
+    @Transactional
     @Override
     public List<UserVO> getUser(Serializable id) {
         logger.debug("=============== service getUser() ===============");
@@ -36,6 +36,10 @@ public class UserServiceImpl implements IUserService {
         System.out.println("userList=" + userList.hashCode());
 
         logger.info("判断是否启用Mybatis一级缓存");
+        UserVO updateUser = new UserVO();
+        updateUser.setId((Long) id);
+        updateUser.setPassword("asdas1111");
+        userVOMapper.updateUser(updateUser);
 
         List<UserVO> userList1 = userVOMapper.getUser(id);
         System.out.println("userList1=" + userList1.hashCode());
