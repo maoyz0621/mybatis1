@@ -9,4 +9,8 @@
     <select id="getUser" resultType="com.myz.entity.UserVO">
     SELECT * from t_user WHERE id = #{id};
   </select>
+
+    <select id="getAll" resultType="com.myz.entity.UserVO">
+        SELECT * from t_user
+    </select>
 </mapper>
