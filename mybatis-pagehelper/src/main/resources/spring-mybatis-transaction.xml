@@ -52,11 +52,6 @@
     </bean>
 
     <!-- 配置数据源懒加载 -->
-    <!--（1）、代理了目标数据源 dataSource 的所有方法，其中在 invoke 方法，Spring使用了排除法；
-        （2）、只有 dataSource 获取到Connection之后，在执行 java.sql.Connection#prepareStatement(java.lang.String) 时候，Spring 才会主动去数据库链接池中获取 Connection ，这样做的好处就是提高数据库链接的使用率和效率；
-        （3）、LazyConnectionDataSourceProxy 经常会被用在一些分库分表、多数据源事务的应用当中；
-        （4）、多数据源的事务管理解决方案，很多采用了同时开启所有数据源事务、同时提交的策略，例如：阿里的 cobar 解决方案等；
-        （5）、如果我们的数据源是使用了 LazyConnectionDataSourceProxy 则在执行 Connection#prepareStatement 之前，spring 是不会向数据库连接池获取数据库链接的-->
     <bean id="dataSourceProxy" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
         <property name="targetDataSource" ref="masterDataSource"/>
     </bean>
@@ -72,9 +67,20 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSourceProxy"/>
         <!--　mybatis配置文件　-->
-        <property name="configLocation" value="classpath:mybatis-config-base.xml"/>
+        <!--<property name="configLocation" value="classpath:mybatis-config-base.xml"/>-->
         <!--　扫描mapper配置文件　-->
         <property name="mapperLocations" value="classpath:com/myz/dao/*.xml"/>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                            pageSizeZero=false
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>
 
 
