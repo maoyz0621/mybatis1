@@ -85,4 +85,16 @@ public class UserServicePage {
         logger.info("total = {}, listSize = {}, pageInfo = {}", pageInfo.getTotal(), pageInfo.getList().size(), pageInfo);
         return null;
     }
+
+    /**
+     * 当SELECT count(0) = 0时，不会在执行后续的查询动作
+     *
+     * @return
+     */
+    public List<UserVO> pageInfoCount0(Long id, int pageNum, int pageSize) {
+        // SELECT count(0) FROM t_user_1 ... count=0
+        PageInfo<Object> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> userVOMapper.getUser(id));
+        logger.info("total = {}, listSize = {}, pageInfo = {}", pageInfo.getTotal(), pageInfo.getList().size(), pageInfo);
+        return null;
+    }
 }

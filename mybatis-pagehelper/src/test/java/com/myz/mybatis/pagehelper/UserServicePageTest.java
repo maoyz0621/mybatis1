@@ -39,4 +39,9 @@ public class UserServicePageTest {
     public void testPageInfoCopy() {
         userServicePage.pageInfoCopy(2, 5);
     }
+
+    @Test
+    public void testPageInfoCount0() {
+        userServicePage.pageInfoCount0(11111111L, 2, 5);
+    }
 }
